@@ -1,1 +1,69 @@
+% Codes by Dr. Goan
+% https://www.academicblock.com/technology/web-tools
+
+function imageResizer
+    % Create a figure window
+    fig = figure('Name', 'Image Resizer', 'NumberTitle', 'off', ...
+                 'MenuBar', 'none', 'ToolBar', 'none', 'Position', [100, 100, 800, 600]);
+
+    % Add a panel for the image
+    imgPanel = uipanel('Parent', fig, 'Position', [0.1 0.3 0.8 0.6]);
+
+    % Add an axis to display the image
+    ax = axes('Parent', imgPanel);
+
+    % Add a button to upload an image
+    uploadButton = uicontrol('Style', 'pushbutton', 'String', 'Upload Image', ...
+                             'Position', [100, 50, 100, 30], 'Callback', @uploadImage);
+
+    % Add a slider to resize the image
+    resizeSlider = uicontrol('Style', 'slider', 'Min', 0.2, 'Max', 2, 'Value', 1, ...
+                             'Position', [250, 50, 300, 30], 'Callback', @resizeImage);
+    
+    % Add a text label for the slider
+    sliderLabel = uicontrol('Style', 'text', 'Position', [250, 90, 300, 20], ...
+                            'String', 'Resize Image (20% to 200%)');
+    
+    % Add a button to save the resized image
+    saveButton = uicontrol('Style', 'pushbutton', 'String', 'Save Image', ...
+                           'Position', [600, 50, 100, 30], 'Callback', @saveImage);
+
+    % Initialize variables to store the image and resized image
+    img = [];
+    resizedImg = [];
+
+    function uploadImage(~, ~)
+        % Let the user select an image file
+        [fileName, pathName] = uigetfile({'*.jpg;*.jpeg;*.png;*.bmp', 'Image Files'}, 'Select an Image');
+        if fileName == 0
+            return;
+        end
+        imgPath = fullfile(pathName, fileName);
+        img = imread(imgPath);
+        resizedImg = img; % Initially, the resized image is the same as the original
+        imshow(img, 'Parent', ax);
+        title(ax, 'Uploaded Image');
+    end
+
+    function resizeImage(~, ~)
+        if isempty(img)
+            return;
+        end
+        scaleFactor = get(resizeSlider, 'Value');
+        resizedImg = imresize(img, scaleFactor);
+        imshow(resizedImg, 'Parent', ax);
+        title(ax, sprintf('Resized Image (%.0f%%)', scaleFactor * 100));
+    end
+
+    function saveImage(~, ~)
+        if isempty(resizedImg)
+            return;
+        end
+        [fileName, pathName] = uiputfile({'*.jpg', 'JPEG Image'; '*.png', 'PNG Image'; '*.bmp', 'Bitmap Image'}, 'Save Image As');
+        if fileName == 0
+            return;
+        end
+        imwrite(resizedImg, fullfile(pathName, fileName));
+    end
+end
 
