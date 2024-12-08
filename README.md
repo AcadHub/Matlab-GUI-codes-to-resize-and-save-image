@@ -1,8 +1,7 @@
 # Matlab-GUI-codes-to-resize-and-save-image
-Codes provided by Dr. Goan
-https://www.academicblock.com
+Implementation of the same logic can also be seen in this <a href="https://www.academicblock.com/technology/web-tools/image-resizer">Image resizer</a>
 
-Implementation of the same logic can also be seen at https://www.academicblock.com/technology/web-tools/image-resizer
+Copyright (c) 2024 Dr. Goan, <a href="https://www.academicblock.com/">Academic Block</a>
 
 
 This Matlab GUI code will allow user to upload and then resize Image. user then can save the rotated image.
